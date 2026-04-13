@@ -7,6 +7,10 @@ const readline = require("readline");
 const app = express();
 app.use(bodyParser.json());
 
+const cors = require("cors");
+app.use(cors());
+
+
 const SCOPES = ["https://www.googleapis.com/auth/gmail.compose"];
 const TOKEN_PATH = "token.json";
 
