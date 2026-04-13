@@ -143,30 +143,53 @@ app.get("/openapi.json", (req, res) => {
       title: "Gmail MCP",
       version: "1.0.0"
     },
+    servers: [
+      {
+        url: "https://gmail-mcp-server-tm78.onrender.com"
+      }
+    ],
     paths: {
       "/tools/draft_gmail": {
         post: {
-          summary: "Create Gmail draft",
           operationId: "draftGmail",
+          summary: "Create Gmail draft",
           requestBody: {
             required: true,
             content: {
               "application/json": {
                 schema: {
                   type: "object",
+                  required: ["to", "subject", "body"],
                   properties: {
-                    to: { type: "string" },
-                    subject: { type: "string" },
-                    body: { type: "string" }
-                  },
-                  required: ["to", "subject", "body"]
+                    to: {
+                      type: "string",
+                      description: "Recipient email"
+                    },
+                    subject: {
+                      type: "string"
+                    },
+                    body: {
+                      type: "string"
+                    }
+                  }
                 }
               }
             }
           },
           responses: {
             "200": {
-              description: "Draft created"
+              description: "Draft created",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      status: { type: "string" },
+                      draftId: { type: "string" }
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -174,6 +197,7 @@ app.get("/openapi.json", (req, res) => {
     }
   });
 });
+
 
 // app.listen(3000, () => {
 //  console.log("Server running on http://localhost:3000");
