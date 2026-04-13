@@ -132,7 +132,7 @@ app.get("/.well-known/ai-plugin.json", (req, res) => {
     },
     api: {
       type: "openapi",
-      url: `${req.protocol}://${req.get("host")}/openapi.json`
+      url: `https://${req.get("host")}/openapi.json`
     }
   });
 });
