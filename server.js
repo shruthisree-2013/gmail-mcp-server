@@ -121,6 +121,59 @@ app.get("/tools", (req, res) => {
     },
   ]);
 });
+app.get("/.well-known/ai-plugin.json", (req, res) => {
+  res.json({
+    name_for_human: "Gmail MCP",
+    name_for_model: "gmail_mcp",
+    description_for_human: "Draft Gmail messages",
+    description_for_model: "Create Gmail drafts",
+    auth: {
+      type: "none"
+    },
+    api: {
+      type: "openapi",
+      url: `${req.protocol}://${req.get("host")}/openapi.json`
+    }
+  });
+});
+app.get("/openapi.json", (req, res) => {
+  res.json({
+    openapi: "3.0.0",
+    info: {
+      title: "Gmail MCP",
+      version: "1.0.0"
+    },
+    paths: {
+      "/tools/draft_gmail": {
+        post: {
+          summary: "Create Gmail draft",
+          operationId: "draftGmail",
+          requestBody: {
+            required: true,
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    to: { type: "string" },
+                    subject: { type: "string" },
+                    body: { type: "string" }
+                  },
+                  required: ["to", "subject", "body"]
+                }
+              }
+            }
+          },
+          responses: {
+            "200": {
+              description: "Draft created"
+            }
+          }
+        }
+      }
+    }
+  });
+});
 
 // app.listen(3000, () => {
 //  console.log("Server running on http://localhost:3000");
